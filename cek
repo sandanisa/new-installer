@@ -11,7 +11,7 @@ read -p "List: " lis;
 while read list; do
 c=$(curl -s "${list}" -L | grep -oP '<title>(.*?)</title>' | cut -d ">" -f2 | cut -d "<" -f1)
 if [[ $c ]]; then
-echo -e " http://${list}/wp-login.php" >> good.txt
+echo -e " ${list}" >> good.txt
 echo -e " ${ijo}[${nat}${c}${ijo}]${nat} ${ijo}${list}${nat}"
 else
 echo ${list} >> error.txt
