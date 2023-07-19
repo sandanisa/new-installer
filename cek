@@ -7,6 +7,7 @@ nat="\033[0m"
 bir="\033[90;36m"
 ijo="\033[32m"
 nat="\033[0m"
+read -p "List: " lis;
 while read list; do
 c=$(curl -s "${list}" -L | grep -oP '<title>(.*?)</title>' | cut -d ">" -f2 | cut -d "<" -f1)
 if [[ $c ]]; then
@@ -15,5 +16,5 @@ echo -e " ${ijo}[${nat}${c}${ijo}]${nat} ${ijo}${list}${nat}"
 else
 echo ${list} >> error.txt
 fi
-done < ok
+done < lis
 
